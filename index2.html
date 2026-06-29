@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محمد صالح | Mohammad Saleh</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Vazirmatn:wght@300;400;700&display=swap');
+
+        :root {
+            --bg-color: #030307;
+            --text-main: #ffffff;
+            --text-secondary: #b0b0bc;
+            --neon-cyan: #00f0ff;
+            --neon-blue: #0072ff;
+            /* استایل لیکویید گلس */
+            --glass-bg: rgba(10, 10, 18, 0.45);
+            --glass-border: rgba(0, 240, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'Vazirmatn', sans-serif;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* المان‌های متحرک پس‌زمینه برای جلوه لیکویید */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-cyan));
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: -1;
+            animation: liquidMove 12s infinite alternate ease-in-out;
+        }
+        body::before { top: -10%; left: -10%; }
+        body::after { bottom: -10%; right: -10%; animation-delay: -6s; }
+
+        @keyframes liquidMove {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, 50px) scale(1.2); }
+        }
+
+        body.en { font-family: 'Fira Code', monospace; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* هدر شیشه‌ای */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(3, 3, 7, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .logo {
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #fff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center;
+        }
+        
+        .nav-links a { 
+            font-size: 0.95rem; 
+            font-weight: 400; 
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 1px solid transparent;
+            display: inline-block;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .nav-links a:hover {
+            color: var(--neon-cyan);
+            background: rgba(0, 240, 255, 0.05);
+            border-color: rgba(0, 240, 255, 0.1);
+        }
+
+        /* استایل اختصاصی برای بخش فعال دورخط کشیده شده منو (لیکویید گلس) */
+        .nav-links a.active {
+            color: #ffffff !important;
+            background: rgba(0, 114, 255, 0.25) !important;
+            border-color: rgba(0, 240, 255, 0.5) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 
+                        inset 0 0 12px rgba(0, 240, 255, 0.2);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+
+        /* سوییچ زبان */
+        .theme-switch-wrapper { display: flex; align-items: center; gap: 8px; }
+        .switch-label { font-size: 0.85rem; font-weight: bold; color: var(--text-secondary); }
+        .theme-switch { width: 50px; height: 26px; position: relative; display: inline-block; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-cyan));
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* هیرو سکشن با استایل لیکویید گلس */
+        .hero {
+            margin-top: 120px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 50px;
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .profile-container { position: relative; width: 200px; height: 200px; flex-shrink: 0; }
+        .profile-img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 2px solid rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .hero-text h1 {
+            font-size: 3rem; margin-bottom: 5px; font-weight: 700;
+            background: linear-gradient(45deg, #fff, var(--text-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-text h2 { color: var(--neon-cyan); font-weight: 400; margin-bottom: 25px; font-size: 1.4rem; }
+        .hero-text p { color: var(--text-secondary); font-size: 1.05rem; text-align: justify; }
+
+        section { padding: 60px 0; }
+        .section-title {
+            font-size: 1.8rem; margin-bottom: 40px; padding-right: 15px; position: relative;
+            background: linear-gradient(45deg, #fff, var(--neon-cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        body:not(.en) .section-title { border-right: 4px solid var(--neon-cyan); }
+        body.en .section-title { border-left: 4px solid var(--neon-cyan); padding-left: 15px; padding-right: 0; border-right: none; }
+
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+        /* تایم‌لاین سوابق */
+        .timeline { position: relative; border-right: 2px solid var(--glass-border); padding-right: 25px; }
+        body.en .timeline { border-right: none; border-left: 2px solid var(--glass-border); padding-left: 25px; }
+        .timeline-item { position: relative; margin-bottom: 35px; }
+        .timeline-item::before {
+            content: ''; position: absolute; width: 12px; height: 12px; background-color: var(--bg-color);
+            border: 2px solid var(--neon-cyan); border-radius: 50%; top: 6px; box-shadow: 0 0 8px var(--neon-cyan);
+        }
+        body:not(.en) .timeline-item::before { right: -32px; }
+        body.en .timeline-item::before { left: -32px; }
+
+        .time-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .time-title { font-size: 1.15rem; font-weight: bold; color: #fff; }
+        .time-period { font-size: 0.9rem; color: var(--neon-cyan); }
+        .time-company { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 8px; }
+        .time-desc { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* کارت پروژه‌ها */
+        .portfolio-list { display: flex; flex-direction: column; gap: 25px; }
+        .portfolio-card {
+            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px; padding: 20px; border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow); display: flex; gap: 20px; align-items: center;
+        }
+        .portfolio-card:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.15);
+            transform: translateY(-3px);
+        }
+        .card-icon {
+            width: 55px; height: 55px; background: rgba(0, 240, 255, 0.05);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .card-icon svg { width: 28px; height: 28px; fill: var(--neon-cyan); }
+        .card-text h4 { font-size: 1.15rem; margin-bottom: 5px; color: #fff; }
+        .card-text p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* تگ‌های مهارت */
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .skill-badge {
+            background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border); padding: 8px 20px; border-radius: 50px;
+            font-size: 0.9rem; font-weight: 500; box-shadow: var(--glass-shadow);
+        }
+        .skill-badge:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+            color: var(--neon-cyan);
+            transform: scale(1.05);
+        }
+
+        /* بخش تماس */
+        .contact-container {
+            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+            border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow);
+        }
+        .contact-info { display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+        .info-link { display: flex; align-items: center; gap: 15px; color: var(--text-secondary); font-size: 1rem; }
+        .info-link:hover { color: var(--neon-cyan); }
+        .info-link svg { width: 22px; height: 22px; fill: var(--neon-cyan); }
+
+        .contact-form { display: flex; flex-direction: column; gap: 15px; }
+        .contact-form input, .contact-form textarea {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border);
+            padding: 14px; border-radius: 12px; color: #fff; font-size: 0.95rem;
+        }
+        body.en .contact-form input, body.en .contact-form textarea { font-family: 'Fira Code', monospace; }
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+        .contact-form button {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-cyan));
+            color: #030307; border: none; padding: 14px; border-radius: 12px;
+            cursor: pointer; font-weight: bold; font-size: 1rem;
+        }
+        .contact-form button:hover {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        footer { text-align: center; padding: 40px; color: var(--text-secondary); border-top: 1px solid var(--glass-border); font-size: 0.85rem; }
+
+        @media (max-width: 900px) {
+            .main-grid, .contact-container { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .hero { flex-direction: column; text-align: center; padding: 40px 25px; gap: 30px; }
+            .hero-text h1 { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav class="container">
+            <div class="logo" id="nav-logo">محمد صالح</div>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#about" id="link-about">درباره من</a></li>
+                    <li><a href="#skills" id="link-skills">مهارت‌ها</a></li>
+                    <li><a href="#experience-portfolio" id="link-portfolio">سوابق و پروژه‌ها</a></li>
+                    <li><a href="#contact" id="link-contact">تماس</a></li>
+                </ul>
+                <div class="theme-switch-wrapper">
+                    <span class="switch-label">FA</span>
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" onclick="toggleLanguage()" />
+                        <div class="slider"></div>
+                    </label>
+                    <span class="switch-label">EN</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section id="about" class="hero">
+            <div class="profile-container">
+                <img src="profile.jpg" alt="Mohammad Saleh" class="profile-img">
+            </div>
+            <div class="hero-text">
+                <h1 id="hero-title">محمد صالح</h1>
+                <h2 id="hero-subtitle">برنامه‌نویس و متخصص هوش مصنوعی (۱۷ ساله)</h2>
+                <p id="hero-desc">من یک توسعه‌دهنده ۱۷ ساله هستم که در حوزه‌های هوش مصنوعی، یادگیری ماشین و توسعه وب تخصص دارم. با استفاده از پایتون و جاوا اسکریپت، راه‌حل‌های نوآورانه ایجاد می‌کنم و علاقه‌مند به حل چالش‌های پیچیده الگوریتمی هستم.</p>
+            </div>
+        </section>
+
+        <!-- Main Grid -->
+        <section id="experience-portfolio" class="main-grid">
+            <!-- Experience -->
+            <div>
+                <h3 class="section-title" id="title-experience">تجربه کاری</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time-header">
+                            <span class="time-title" id="exp1-title">مهندس ارشد هوش مصنوعی</span>
+                            <span class="time-period">2024 - Present</span>
+                        </div>
+                        <div class="time-company">AI Solutions Inc.</div>
+                        <div class="time-desc" id="exp1-desc">رهبری استقرار مدل‌های هوش مصنوعی و بینایی ماشین در سیستم‌های مقیاس‌پذیر تولیدی.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time-header">
+                            <span class="time-title" id="exp2-title">توسعه‌دهنده نرم‌افزار</span>
+                            <span class="time-period">2022 - 2024</span>
+                        </div>
+                        <div class="time-company">Alpha Tech</div>
+                        <div class="time-desc" id="exp2-desc">توسعه برنامه‌های وب پیشرفته و تعامل نزدیک با موتورهای پردازش کلان‌داده.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio -->
+            <div>
+                <h3 class="section-title" id="title-portfolio">پروژه‌ها</h3>
+                <div class="portfolio-list">
+                    <div class="portfolio-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 22C6.477 12 2 10 2 10s4-2 10-8c5.523 6 10 8 10 8s-4 2-10 12zm0-7a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+                        </div>
+                        <div class="card-text">
+                            <h4 id="proj1-title">پروژه آلفا - بینایی ماشین</h4>
+                            <p id="proj1-desc">شبکه عصبی کانولوشنی پیشرفته برای تشخیص و ردیابی بلادرنگ اشیاء.</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.53c-.26-.81-1-1.4-1.9-1.4h-1v-3c0-.55-.45-1-1-1h-6v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        </div>
+                        <div class="card-text">
+                            <h4 id="proj2-title">پروژه بتا - رابط وب هوشمند</h4>
+                            <p id="proj2-desc">رابط کاربری تعاملی ساخته شده با جاوا اسکریپت مدرن متصل به مدل‌های زبانی.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills">
+            <h3 class="section-title" id="title-skills">مهارت‌ها</h3>
+            <div class="skills-grid">
+                <div class="skill-badge">Python (Deep Learning)</div>
+                <div class="skill-badge">JavaScript (Node.js)</div>
+                <div class="skill-badge">AI Model Training</div>
+                <div class="skill-badge">React.js / React Native</div>
+                <div class="skill-badge">Machine Learning</div>
+                <div class="skill-badge">Linux & Git</div>
+                <div class="skill-badge">Docker & Cloud Deployment</div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h3 class="section-title" id="title-contact">تماس با من</h3>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <a href="mailto:itsmohamadm4@email.com" class="info-link">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        <span>itsmohamadm4@email.com</span>
+                    </a>
+                    <a href="https://github.com/itsmohamadm" target="_blank" class="info-link">
+                        <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                        <span>github.com/itsmohamadm</span>
+                    </a>
+                    <a href="https://linkedin.com/in/mohammad-saleh" target="_blank" class="info-link">
+                        <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                        <span>linkedin.com/in/mohammad-saleh</span>
+                    </a>
+                </div>
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent simulated!');">
+                    <input type="text" id="form-name" placeholder="نام شما" required>
+                    <input type="email" id="form-email" placeholder="ایمیل شما" required>
+                    <textarea id="form-msg" placeholder="پیام شما..." rows="4" required></textarea>
+                    <button type="submit" id="form-btn">ارسال پیام</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer id="footer-text">
+        © ۲۰۲۶ محمد صالح. تمامی حقوق محفوظ است.
+    </footer>
+
+    <script>
+        const translations = {
+            fa: {
+                logo: "محمد صالح", about: "درباره من", skills: "مهارت‌ها", portfolio: "پروژه‌ها", experience: "تجربه کاری",
+                heroTitle: "محمد صالح", heroSubtitle: "برنامه‌نویس و متخصص هوش مصنوعی (۱۷ ساله)",
+                heroDesc: "من یک توسعه‌دهنده ۱۷ ساله هستم که در حوزه‌های هوش مصنوعی، یادگیری ماشین و توسعه وب تخصص دارم. با استفاده از پایتون و جاوا اسکریپت، راه‌حل‌های نوآورانه ایجاد می‌کنم و علاقه‌مند به حل چالش‌های پیچیده الگوریتمی هستم.",
+                titleExperience: "تجربه کاری", titlePortfolio: "پروژه‌ها", titleSkills: "مهارت‌ها", titleContact: "تماس با من",
+                exp1Title: "مهندس ارشد هوش مصنوعی", exp1Desc: "رهبری استقرار مدل‌های هوش مصنوعی و بینایی ماشین در سیستم‌های مقیاس‌پذیر تولیدی.",
+                exp2Title: "توسعه‌دهنده نرم‌افزار", exp2Desc: "توسعه برنامه‌های وب پیشرفته و تعامل نزدیک با موتورهای پردازش کلان‌داده.",
+                proj1Title: "پروژه آلفا - بینایی ماشین", proj1Desc: "شبکه عصبی کانولوشنی پیشرفته برای تشخیص و ردیابی بلادرنگ اشیاء.",
+                proj2Title: "پروژه بتا - رابط وب هوشمند", proj2Desc: "رابط کاربری تعاملی ساخته شده با جاوا اسکریپت مدرن متصل به مدل‌های زبانی.",
+                placeholderName: "نام شما", placeholderEmail: "ایمیل شما", placeholderMsg: "پیام شما...", formBtn: "ارسال پیام",
+                footer: "© ۲۰۲۶ محمد صالح. تمامی حقوق محفوظ است."
+            },
+            en: {
+                logo: "Mohammad Saleh", about: "About Me", skills: "Skills", portfolio: "Projects", experience: "Experience",
+                heroTitle: "Mohammad Saleh", heroSubtitle: "Developer & AI Specialist (Age 17)",
+                heroDesc: "I am a 17-year-old developer specializing in Artificial Intelligence, Machine Learning, and Web Development. Using Python and JavaScript, I create innovative solutions and enjoy tackling complex algorithmic challenges.",
+                titleExperience: "Experience", titlePortfolio: "Portfolio", titleSkills: "Skills", titleContact: "Contact Me",
+                exp1Title: "Senior AI Engineer", exp1Desc: "Led AI model deployment and computer vision implementation into scalable production environments.",
+                exp2Title: "Software Developer", exp2Desc: "Developed high-performance web applications and integrated heavy data processing engines.",
+                proj1Title: "Project Alpha - AI Vision", proj1Desc: "Advanced convolutional neural networks built for real-time object detection and tracking.",
+                proj2Title: "Project Beta - Web UI", proj2Desc: "Interactive dashboards built using modern JavaScript communicating seamlessly with AI backends.",
+                placeholderName: "Your Name", placeholderEmail: "Your Email", placeholderMsg: "Your Message...", formBtn: "Send Message",
+                footer: "© 2026 Mohammad Saleh. All Rights Reserved."
+            }
+        };
+
+        function toggleLanguage() {
+            const checkBox = document.getElementById("checkbox");
+            const body = document.body;
+            let currentLang = checkBox.checked ? 'en' : 'fa';
+            
+            if (currentLang === 'en') {
+                body.classList.add('en');
+                body.setAttribute('dir', 'ltr');
+                body.setAttribute('lang', 'en');
+            } else {
+                body.classList.remove('en');
+                body.setAttribute('dir', 'rtl');
+                body.setAttribute('lang', 'fa');
+            }
+
+            const langData = translations[currentLang];
+            document.getElementById('nav-logo').textContent = langData.logo;
+            document.getElementById('link-about').textContent = langData.about;
+            document.getElementById('link-skills').textContent = langData.skills;
+            document.getElementById('link-portfolio').textContent = langData.portfolio;
+            document.getElementById('link-contact').textContent = langData.contact;
+            
+            document.getElementById('hero-title').textContent = langData.heroTitle;
+            document.getElementById('hero-subtitle').textContent = langData.heroSubtitle;
+            document.getElementById('hero-desc').textContent = langData.heroDesc;
+            
+            document.getElementById('title-experience').textContent = langData.titleExperience;
+            document.getElementById('title-portfolio').textContent = langData.titlePortfolio;
+            document.getElementById('title-skills').textContent = langData.titleSkills;
+            document.getElementById('title-contact').textContent = langData.titleContact;
+            
+            document.getElementById('exp1-title').textContent = langData.exp1Title;
+            document.getElementById('exp1-desc').textContent = langData.exp1Desc;
+            document.getElementById('exp2-title').textContent = langData.exp2Title;
+            document.getElementById('exp2-desc').textContent = langData.exp2Desc;
+            
+            document.getElementById('proj1-title').textContent = langData.proj1Title;
+            document.getElementById('proj1-desc').textContent = langData.proj1Desc;
+            document.getElementById('proj2-title').textContent = langData.proj2Title;
+            document.getElementById('proj2-desc').textContent = langData.proj2Desc;
+            
+            document.getElementById('form-name').placeholder = langData.placeholderName;
+            document.getElementById('form-email').placeholder = langData.placeholderEmail;
+            document.getElementById('form-msg').placeholder = langData.placeholderMsg;
+            document.getElementById('form-btn').textContent = langData.formBtn;
+            
+            document.getElementById('footer-text').textContent = langData.footer;
+        }
+
+        // اسکریپت تشخیص منوی فعال در هنگام اسکرول (Scroll-Spy)
+        const sections = document.querySelectorAll("section[id]");
+        const navAnchorLinks = document.querySelectorAll(".nav-links a");
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "-40% 0px -50% 0px",
+            threshold: 0
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute("id");
+                    
+                    navAnchorLinks.forEach((link) => {
+                        if (link.getAttribute("href") === `#${id}`) {
+                            link.classList.add("active");
+                        } else {
+                            link.classList.remove("active");
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach((section) => sectionObserver.observe(section));
+    </script>
+</body>
+</html>
